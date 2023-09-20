@@ -4,7 +4,7 @@
   "description": "An early, work-in-progress plugin to add status bar items for configuring and running cargo-make builds",
   "version": "0.1.0",
   "author": { "name": "Gabriel Lugo" },
-  "publisher": "Gabriel Lugo",
+  "publisher": "lugotaku",
   "repository": { "url": "https://github.com/GTLugo/cargo-make-runner" },
   "license": "MIT",
   "engines": {
