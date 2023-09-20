@@ -1,51 +1,36 @@
-# cargo-make-runner README
+# cargo-make-runner
 
-This is the README for your extension "cargo-make-runner". After writing up a brief description, we recommend including the following sections.
+A quality-of-life plugin for users of `cargo-make`
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Target and profile selection, run and debug play buttons, build button, all in the status bar for convenience.
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+> Note: This is still very much a WIP
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+* You must install `cargo-make`
+* The extension assumes there exists `run` and `build` tasks.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `cargo_make_runner.target_directory`: The build directory. The release/debug/etc subdirectories are assumed to be in here. This is relative to the workspace.
+* `cargo_make_runner.debugger_type_windows`: The debugger to use for debugging on Windows.
+* `cargo_make_runner.debugger_type_linux`: The debugger to use for debugging on Linux.
+* `cargo_make_runner.debugger_type_mac`: The debugger to use for debugging on Mac.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+None yet, but I expect many.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.1.0
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Initial release. bau bau
 
 ---
 
