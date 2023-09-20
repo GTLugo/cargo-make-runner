@@ -1,0 +1,107 @@
+{
+  "name": "cargo-make-runner",
+  "displayName": "Cargo Make Runner",
+  "description": "An early, work-in-progress plugin to add status bar items for configuring and running cargo-make builds",
+  "version": "0.1.0",
+  "author": { "name": "Gabriel Lugo" },
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:Makefile.toml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Cargo Make Runner",
+      "properties": {
+        "cargo_make_runner.target_directory": {
+          "title": "Target Directory",
+          "type": "string",
+          "default": "target",
+          "description": "The build directory. The release/debug/etc subdirectories are assumed to be in here. This is relative to the workspace."
+        },
+        "cargo_make_runner.debugger_type_windows": {
+          "title": "Windows Debugger",
+          "type": "string",
+          "default": "cppvsdbg",
+          "description": "The debugger to use for debugging on Windows."
+        },
+        "cargo_make_runner.debugger_type_linux": {
+          "title": "Linux Debugger",
+          "type": "string",
+          "default": "gdb",
+          "description": "The debugger to use for debugging on Linux."
+        },
+        "cargo_make_runner.debugger_type_mac": {
+          "title": "Mac Debugger",
+          "type": "string",
+          "default": "lldb",
+          "description": "The debugger to use for debugging on MacOS."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "cargo-make-runner.target",
+        "title": "Cargo Make: Select Target"
+      },
+      {
+        "command": "cargo-make-runner.profile",
+        "title": "Cargo Make: Select Profile"
+      },
+      {
+        "command": "cargo-make-runner.build",
+        "title": "Cargo Make: Build"
+      },
+      {
+        "command": "cargo-make-runner.run",
+        "title": "Cargo Make: Run"
+      },
+      {
+        "command": "cargo-make-runner.debug",
+        "title": "Cargo Make: Debug"
+      }
+    ],
+    "tasks": [
+      {
+        "type": "shell",
+        "label": "cargo-make build",
+        "command": "cargo-make build",
+        "problemMatcher": []
+      },
+      {
+        "type": "shell",
+        "label": "cargo run",
+        "command": "cargo run",
+        "problemMatcher": []
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "dependencies": {
+    "toml": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.82.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}
