@@ -285,7 +285,6 @@ function getCargoDebugConfiguration(): vscode.DebugConfiguration {
     program: targetBin,
     args: ['run', mode],
     cwd: '${workspaceFolder}',
-    preLaunchTask: buildCmdID
   };
 }
 
