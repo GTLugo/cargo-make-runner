@@ -28,6 +28,10 @@ None yet, but I expect many.
 
 ## Release Notes
 
+### 0.1.2
+
+Removed erroneous "cargo-make-runner.build" preLaunchTask which could cause crashes.
+
 ### 0.1.1
 
 Fixed "Cargo Make/Build" output channel not being reused, bloating output panel.
