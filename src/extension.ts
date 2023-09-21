@@ -29,9 +29,13 @@ let workspaceTargets: string[] = [];
 let selectedProfile: string;
 let selectedTarget: string | undefined;
 
+let outputChannel: vscode.OutputChannel;
+
 // This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
 	console.log('HELLO HELLO');
+
+  outputChannel = vscode.window.createOutputChannel('Cargo Make/Build');
 
   selectedProfile = context.workspaceState.get("selectedProfile", "development");
   selectedTarget = context.workspaceState.get("selectedTarget", undefined);
@@ -118,8 +122,9 @@ function registerCommands(context: vscode.ExtensionContext): void {
   context.subscriptions.push(vscode.commands.registerCommand(debugCmdID, async () => {
     let workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
 
-    let outputChannel = vscode.window.createOutputChannel('Cargo Make');
+    outputChannel.clear();
     outputChannel.show();
+    
     // run your cargo make command
     let cargoCmd = child_process.spawn(
       'cargo', 
