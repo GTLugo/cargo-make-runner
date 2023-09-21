@@ -36,6 +36,11 @@ Fixed "Cargo Make/Build" output channel not being reused, bloating output panel.
 
 Initial release. bau bau
 
+## Todo
+
+* Makefile.toml task selection.
+* Allow target selection to include example binaries.
+
 ---
 
 ## Following extension guidelines
