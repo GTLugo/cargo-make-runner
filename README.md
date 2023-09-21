@@ -28,6 +28,10 @@ None yet, but I expect many.
 
 ## Release Notes
 
+### 0.1.1
+
+Fixed "Cargo Make/Build" output channel not being reused, bloating output panel.
+
 ### 0.1.0
 
 Initial release. bau bau
