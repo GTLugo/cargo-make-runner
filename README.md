@@ -1,17 +1,19 @@
 # cargo-make-runner
 
-A quality-of-life plugin for users of `cargo-make`
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R8PGIU6)
+A quality-of-life plugin for users of [cargo-make](https://github.com/sagiegurari/cargo-make)
 
 ## Features
 
 Target and profile selection, run and debug play buttons, build button, all in the status bar for convenience.
+Provides `CARGO_MAKE_RUN_TARGET` cargo-make environment variable which is set to the currently selected target.
 
 > Note: This is still very much a WIP
 
 ## Requirements
 
-* You must install `cargo-make`
-* The extension assumes there exists `run` and `build` tasks.
+* You must install [cargo-make](https://github.com/sagiegurari/cargo-make)
+* The extension assumes there exists `run` and `build` tasks in your makefile.
 
 ## Extension Settings
 
@@ -20,13 +22,18 @@ This extension contributes the following settings:
 * `cargo_make_runner.target_directory`: The build directory. The release/debug/etc subdirectories are assumed to be in here. This is relative to the workspace.
 * `cargo_make_runner.debugger_type_windows`: The debugger to use for debugging on Windows.
 * `cargo_make_runner.debugger_type_linux`: The debugger to use for debugging on Linux.
-* `cargo_make_runner.debugger_type_mac`: The debugger to use for debugging on Mac.
+* `cargo_make_runner.debugger_type_mac`: The debugger to use for debugging on Mac. 
 
 ## Known Issues
 
 None yet, but I expect many.
 
 ## Release Notes
+
+### 0.2.0
+
+* Provides `CARGO_MAKE_RUN_TARGET` cargo-make environment variable which is set to the currently selected target.
+* Targets section no longer list targets which don't include `[[bin]]` or `src/main.rs`.
 
 ### 0.1.2
 

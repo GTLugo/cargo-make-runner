@@ -16,7 +16,7 @@ const buildCmdID = 'cargo-make-runner.build';
 const runCmdID = 'cargo-make-runner.run';
 const debugCmdID = 'cargo-make-runner.debug';
 
-  // TODO: stop buttons for debugger and runner
+// TODO: stop buttons for debugger and runner
 let refreshStatusBar: vscode.StatusBarItem;
 let targetStatusBar: vscode.StatusBarItem;
 let profileStatusBar: vscode.StatusBarItem;
@@ -24,12 +24,13 @@ let buildStatusBar: vscode.StatusBarItem;
 let runStatusBar: vscode.StatusBarItem;
 let debugStatusBar: vscode.StatusBarItem;
 
-// Add support for example targets
+let outputChannel: vscode.OutputChannel;
 let workspaceTargets: string[] = [];
+
+// Persistent state
 let selectedProfile: string;
 let selectedTarget: string | undefined;
-
-let outputChannel: vscode.OutputChannel;
+let selectedIsExample: boolean;
 
 // This method is called when your extension is activated
 export function activate(context: vscode.ExtensionContext) {
@@ -39,6 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   selectedProfile = context.workspaceState.get("selectedProfile", "development");
   selectedTarget = context.workspaceState.get("selectedTarget", undefined);
+  selectedIsExample = context.workspaceState.get("selectedIsExample", false);
 
   findTomlProjects();
 
@@ -152,20 +154,20 @@ function registerCommands(context: vscode.ExtensionContext): void {
 function provideTasks(context: vscode.ExtensionContext): void {
   context.subscriptions.push(vscode.tasks.registerTaskProvider('shell', {
     provideTasks: () => {
+      const bin = selectedTarget === undefined ? '' : selectedTarget;
       let taskBuild = new vscode.Task(
         {type: 'shell'}, 
         vscode.TaskScope.Workspace, 
         buildCmdID, 
         'Rust', 
-        new vscode.ShellExecution("cargo make " + "--profile " + selectedProfile + " build")
+        new vscode.ShellExecution("cargo make " + "--profile " + selectedProfile + " -e CARGO_MAKE_RUN_TARGET=" + bin + " build")
       );
-    
       let taskRun = new vscode.Task(
         {type: 'shell'}, 
         vscode.TaskScope.Workspace,
         runCmdID, 
         'Rust', 
-        new vscode.ShellExecution("cargo make " + "--profile " + selectedProfile + " run")
+        new vscode.ShellExecution("cargo make " + "--profile " + selectedProfile + " -e CARGO_MAKE_RUN_TARGET=" + bin + " run")
       );
 
       return [taskBuild, taskRun];
@@ -302,25 +304,45 @@ function findTomlProjects(): void  {
   }
   // console.log("Workspace: " + workspace);
 
-  let cargoTomlPath = path.resolve(workspace, 'Cargo.toml'); // Replace the path with your actual Cargo.toml path
+  let cargoTomlPath = path.resolve(workspace, 'Cargo.toml');
   let cargoTomlContent = fs.readFileSync(cargoTomlPath, 'utf8');
 
   let cargoToml = toml.parse(cargoTomlContent);
   // console.log("Top-level TOML: ");
-  // console.log(cargoToml);
+  console.log(cargoToml);
 
   workspaceTargets.length = 0; // clear array to prepare for updating
   if (cargoToml.package && cargoToml.package.name) {
     // Single Cargo.toml
-    workspaceTargets.push(cargoToml.package.name);
+    if (cargoToml.bin) {
+      for (const bin of cargoToml.bin) {
+        if(bin.name) {
+          workspaceTargets.push(bin.name);
+        }
+      }
+    } else {
+      const pathToMain = path.join(workspace, 'src', 'main.rs');
+      if (fs.existsSync(pathToMain)) {
+        workspaceTargets.push(cargoToml.package.name);
+      }
+    }
   } else if (cargoToml.workspace && cargoToml.workspace.members) {
     // Workspace
     for (const member of cargoToml.workspace.members) {
-      const memberPath = path.resolve(workspace, member, 'Cargo.toml'); // Assuming script is run at workspace root
+      const memberPath = path.resolve(workspace, member, 'Cargo.toml');
       const memberTomlContent = fs.readFileSync(memberPath, 'utf8');
       const memberToml = toml.parse(memberTomlContent);
-      if (memberToml.package && memberToml.package.name) {
-        workspaceTargets.push(memberToml.package.name);
+      if (memberToml.bin) {
+        for (const bin of memberToml.bin) {
+          if(bin.name) {
+            workspaceTargets.push(bin.name);
+          }
+        }
+      } else {
+        const pathToMain = path.join(workspace, member, 'src', 'main.rs');
+        if (fs.existsSync(pathToMain)) {
+          workspaceTargets.push(memberToml.package.name);
+        }
       }
     }
   } else {
