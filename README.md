@@ -1,6 +1,6 @@
 # cargo-make-runner
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R8PGIU6)
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'R6R8PGIU6');kofiwidget2.draw();</script> 
 
 A quality-of-life plugin for users of [cargo-make](https://github.com/sagiegurari/cargo-make)
 
