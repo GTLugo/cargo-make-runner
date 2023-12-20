@@ -62,7 +62,6 @@ Initial release. bau bau
 
 ## Todo
 
-* Default Makefile.toml
 * Makefile.toml task selection
 * Allow target selection to include example binaries
 * Running of tests
