@@ -21,25 +21,38 @@
     "configuration": {
       "title": "Cargo Make Runner",
       "properties": {
-        "cargo_make_runner.target_directory": {
+        "cargo_make_runner.additionalArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Additional arguments to pass to the target when running."
+        },
+        "cargo_make_runner.useCompactIcons": {
+          "type": "boolean",
+          "default": "true",
+          "description": "Use compact icons in the status bar."
+        },
+        "cargo_make_runner.targetDirectory": {
           "title": "Target Directory",
           "type": "string",
           "default": "target",
           "description": "The build directory. The release/debug/etc subdirectories are assumed to be in here. This is relative to the workspace."
         },
-        "cargo_make_runner.debugger_type_windows": {
+        "cargo_make_runner.debuggerTypeWindows": {
           "title": "Windows Debugger",
           "type": "string",
           "default": "cppvsdbg",
           "description": "The debugger to use for debugging on Windows."
         },
-        "cargo_make_runner.debugger_type_linux": {
+        "cargo_make_runner.debuggerTypeLinux": {
           "title": "Linux Debugger",
           "type": "string",
           "default": "gdb",
           "description": "The debugger to use for debugging on Linux."
         },
-        "cargo_make_runner.debugger_type_mac": {
+        "cargo_make_runner.debuggerTypeMac": {
           "title": "Mac Debugger",
           "type": "string",
           "default": "lldb",
@@ -82,7 +95,17 @@
         "command": "cargo run",
         "problemMatcher": []
       }
-    ]
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "cargo_make_runner",
+          "name": "Cargo Make",
+          "when": "workspaceContains:Makefile.toml",
+          "icon": "run"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
