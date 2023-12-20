@@ -43,6 +43,7 @@ This extension contributes the following settings:
 * Provides `CARGO_MAKE_RUN_TARGET` cargo-make environment variable which is set to the currently selected target.
 * Targets section no longer list targets which don't include `[[bin]]` or `src/main.rs`.
 * Added `cargo_make_runner.useCompactIcons`.
+* Added `cargo_make_runner.additionalArgs`.
 * Adjusted status bar icons to mimic the CMake extension.
 * All build output for each run option goes into Output panel.
 * Run button now no longer depends on a `run` task in the `Makefile.toml`.
