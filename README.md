@@ -21,6 +21,7 @@ Provides `CARGO_MAKE_RUN_TARGET` cargo-make environment variable which is set to
 
 This extension contributes the following settings:
 
+* `cargo_make_runner.additionalArgs`: Additional arguments to pass to the target when running.
 * `cargo_make_runner.useCompactIcons`: Use compact icons in the status bar.
 * `cargo_make_runner.targetDirectory`: The build directory. The release/debug/etc subdirectories are assumed to be in here. This is relative to the workspace.
 * `cargo_make_runner.debuggerTypeWindows`: The debugger to use for debugging on Windows.
