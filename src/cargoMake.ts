@@ -27,8 +27,6 @@ export class CargoMake {
   }
 
   registerCommands(context: vscode.ExtensionContext, rootPath: string): void {
-    // TODO: Make run instead do what debug does, but without debugging mode because the Makefile.toml should not need a run task since it should only handle building and testing.
-
     context.subscriptions.push(vscode.commands.registerCommand(refreshCmdID, () => {
       this.workspaceData.findTomlProjects(rootPath);
     }));
@@ -70,22 +68,8 @@ export class CargoMake {
         this.workspaceData.selectedProfile = input;
         context.workspaceState.update("selectedProfile", this.workspaceData.selectedProfile);
         this.statusBarButtons.updateProfileLabel(this.workspaceData.selectedProfile);
-        // vscode.window.showInformationMessage('Cargo Make: Selected profile `' + makeProfile + '`');
       }
     }));
-    
-    // Old build:
-    // context.subscriptions.push(vscode.commands.registerCommand(buildCmdID, async () => {
-    //   const buildTask = vscode.tasks.fetchTasks().then(tasks => {
-    //     const task = tasks.find(task => task.name === buildCmdID);
-    //     if (!task) { 
-    //       throw new Error('Build task not found'); 
-    //     }
-    //     return task;
-    //   });
-  
-    //   vscode.tasks.executeTask(await buildTask);
-    // }));
     
     context.subscriptions.push(vscode.commands.registerCommand(buildCmdID, async () => {
       let workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
@@ -138,20 +122,6 @@ export class CargoMake {
       });
     }));
     
-    // Old run:
-    // context.subscriptions.push(vscode.commands.registerCommand(runCmdID, async () => {
-    //   this.workspaceData.additionalArgs = context.workspaceState.get("additionalArgs", []);
-    //   const runTask = vscode.tasks.fetchTasks().then(tasks => {
-    //     const task = tasks.find(task => task.name === runCmdID);
-    //     if (!task) { 
-    //       throw new Error('Run task not found'); 
-    //     }
-    //     return task;
-    //   });
-  
-    //   vscode.tasks.executeTask(await runTask);
-    // }));
-    
     context.subscriptions.push(vscode.commands.registerCommand(runCmdID, async () => {
       let workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
   
@@ -195,22 +165,6 @@ export class CargoMake {
 
     context.subscriptions.push(vscode.tasks.registerTaskProvider('shell', {
       provideTasks: () => {
-        // const bin = this.workspaceData.selectedTarget === undefined ? '' : this.workspaceData.selectedTarget;
-        // let taskBuild = new vscode.Task(
-        //   {type: 'shell'}, 
-        //   vscode.TaskScope.Workspace, 
-        //   buildCmdID, 
-        //   'Rust', 
-        //   new vscode.ShellExecution("cargo make " + "--profile " + this.workspaceData.selectedProfile + " -e CARGO_MAKE_RUN_TARGET=" + bin + " build")
-        // );
-        // Old run:
-        // let taskRun = new vscode.Task(
-        //   {type: 'shell'}, 
-        //   vscode.TaskScope.Workspace,
-        //   runCmdID, 
-        //   'Rust', 
-        //   new vscode.ShellExecution("cargo make " + "--profile " + this.workspaceData.selectedProfile + " -e CARGO_MAKE_RUN_TARGET=" + bin + " run")
-        // );
         let taskRun = new vscode.Task(
           {type: 'shell'}, 
           vscode.TaskScope.Workspace,
@@ -219,7 +173,7 @@ export class CargoMake {
           new vscode.ShellExecution(debugConfig.program + " " + this.workspaceData.settings.get("additionalArgs"))
         );
   
-        return [/*taskBuild,*/ taskRun];
+        return [taskRun];
       },
       resolveTask(_task: vscode.Task): vscode.Task | undefined {
         return undefined;

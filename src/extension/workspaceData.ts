@@ -24,8 +24,6 @@ export class WorkspaceData {
     let cargoTomlContent = fs.readFileSync(cargoTomlPath, 'utf8');
   
     let cargoToml = toml.parse(cargoTomlContent);
-    // console.log("Top-level TOML: ");
-    console.log(cargoToml);
   
     this.targets.length = 0; // clear array to prepare for updating
     if (cargoToml.package && cargoToml.package.name) {
@@ -56,7 +54,6 @@ export class WorkspaceData {
           }
         } else {
           const pathToMain = path.join(rootPath, member, 'src', 'main.rs');
-          console.log(pathToMain);
           if (fs.existsSync(pathToMain)) {
             this.targets.push(memberToml.package.name);
           }
@@ -65,9 +62,6 @@ export class WorkspaceData {
     } else {
       vscode.window.showErrorMessage('Unsupported TOML configuration. TOML must include a [package] section with a name field for single crates or a [workspace] section with members for workspaces.');
     }
-  
-    // console.log("Members: ");
-    // console.log(workspaceTargets);
   
     if (this.selectedTarget === undefined || this.selectedTarget === "") {
       this.selectedTarget = this.targets.at(0);
@@ -104,8 +98,6 @@ export class WorkspaceData {
     }
     
     const targetBin = path.join(rootPath, targetDir, profile, this.selectedTarget + binaryExtension);
-  
-    // const mode = this.selectedProfile === "release" ? "--release" : "";
   
     let config = {
       type: debugType,
