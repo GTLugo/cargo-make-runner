@@ -64,6 +64,7 @@ Initial release. bau bau
 
 * Makefile.toml task selection.
 * Allow target selection to include example binaries.
+* Running of tests
 
 ---
 
