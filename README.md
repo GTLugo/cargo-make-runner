@@ -17,7 +17,7 @@ The extension will call the `build` task, so if there is no `build` task in the 
 ## Requirements
 
 * You must install [cargo-make](https://github.com/sagiegurari/cargo-make)
-* You must have a `Makefile.toml` in the root directory of your workspace (it can be empty).
+* You must have a `Makefile.toml` in the root directory of your workspace. The file can be left empty and cargo-make defaults will be used.
 
 ## Extension Settings
 

@@ -2,6 +2,11 @@
 
 All notable changes to the "cargo-make-runner" extension will be documented in this file.
 
+## [0.2.4]
+
+### Changed
+- Clarifications made to README.
+
 ## [0.2.3]
 
 ### Fixed
