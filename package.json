@@ -2,7 +2,7 @@
   "name": "cargo-make-runner",
   "displayName": "Cargo Make Runner",
   "description": "An early, work-in-progress plugin to add status bar items for configuring and running cargo-make builds",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": { "name": "Gabriel Lugo" },
   "publisher": "lugotaku",
   "repository": { "url": "https://github.com/GTLugo/cargo-make-runner" },
@@ -21,6 +21,11 @@
     "configuration": {
       "title": "Cargo Make Runner",
       "properties": {
+        "cargo_make_runner.clearRunTaskTerminal": {
+          "type": "boolean",
+          "default": "true",
+          "description": "Automatically clear the run task terminal before each run."
+        },
         "cargo_make_runner.additionalArgs": {
           "type": "array",
           "items": {
@@ -80,20 +85,6 @@
       {
         "command": "cargo-make-runner.debug",
         "title": "Cargo Make: Debug"
-      }
-    ],
-    "tasks": [
-      {
-        "type": "shell",
-        "label": "cargo-make build",
-        "command": "cargo-make build",
-        "problemMatcher": []
-      },
-      {
-        "type": "shell",
-        "label": "cargo run",
-        "command": "cargo run",
-        "problemMatcher": []
       }
     ],
     "views": {
