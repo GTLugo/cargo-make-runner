@@ -11,12 +11,14 @@ export class WorkspaceData {
 
   settings: vscode.WorkspaceConfiguration;
 
-  constructor(context: vscode.ExtensionContext) {
+  constructor(context: vscode.ExtensionContext, rootPath: string) {
     this.settings = vscode.workspace.getConfiguration("cargo_make_runner");
 
     this.selectedTarget = context.workspaceState.get("selectedTarget", undefined);
     this.selectedIsExample = context.workspaceState.get("selectedIsExample", false);
     this.selectedProfile = context.workspaceState.get("selectedProfile", "development");
+    
+    this.findTomlProjects(rootPath);
   }
 
   findTomlProjects(rootPath: string): void  {
@@ -63,7 +65,7 @@ export class WorkspaceData {
       vscode.window.showErrorMessage('Unsupported TOML configuration. TOML must include a [package] section with a name field for single crates or a [workspace] section with members for workspaces.');
     }
   
-    if (this.selectedTarget === undefined || this.selectedTarget === "") {
+    if (this.selectedTarget === undefined) {
       this.selectedTarget = this.targets.at(0);
     }
   }

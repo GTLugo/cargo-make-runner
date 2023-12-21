@@ -2,6 +2,11 @@
 
 All notable changes to the "cargo-make-runner" extension will be documented in this file.
 
+## [0.2.3]
+
+### Fixed
+- Bug where sometimes the target wouldn't be properly assigned until window was reloaded.
+
 ## [0.2.2]
 
 ### Changed
