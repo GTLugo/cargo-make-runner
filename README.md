@@ -15,7 +15,7 @@ Provides `CARGO_MAKE_RUN_TARGET` cargo-make environment variable which is set to
 ## Requirements
 
 * You must install [cargo-make](https://github.com/sagiegurari/cargo-make)
-* The extension assumes there exists a `build` task in your makefile.
+* The extension assumes there exists a `build` task in your makefile, otherwise it will try to use the default `build` task (this is standard behavior for cargo-make).
 
 ## Extension Settings
 

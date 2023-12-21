@@ -13,12 +13,11 @@ export class CargoMake {
   constructor(context: vscode.ExtensionContext, rootPath: string) {
     this.outputChannel = vscode.window.createOutputChannel('Cargo Make/Build');
 
-    this.workspaceData = new WorkspaceData(context);
+    this.workspaceData = new WorkspaceData(context, rootPath);
     this.statusBarButtons = new StatusBarButtons(context, this.workspaceData);
 
     this.registerCommands(context, rootPath);
     this.provideTasks(context, rootPath);
-    this.workspaceData.findTomlProjects(rootPath);
   }
 
   // This method is called when my extension is deactivated
