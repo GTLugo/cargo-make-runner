@@ -2,18 +2,15 @@
 
 All notable changes to the "cargo-make-runner" extension will be documented in this file.
 
-## [0.1.0]
-- Initial release. bau bau
+## [0.2.2]
 
-## [0.1.1]
+### Changed
+- Switched to changelog file.
 
-### Fixed 
-- "Cargo Make/Build" output channel not being reused, bloating output panel.
+## [0.2.1]
 
-## [0.1.2]
-
-### Fixed 
-- Erroneous "cargo-make-runner.build" preLaunchTask which would cause crashes.
+### Added
+- `cargo_make_runner.clearRunTaskTerminal`.
 
 ## [0.2.0]
 
@@ -32,12 +29,15 @@ All notable changes to the "cargo-make-runner" extension will be documented in t
 ### Fixed
 - Targets section no longer lists targets which don't include `[[bin]]` or `src/main.rs`.
 
-## [0.2.1]
+## [0.1.2]
 
-### Added
-- `cargo_make_runner.clearRunTaskTerminal`.
+### Fixed 
+- Erroneous "cargo-make-runner.build" preLaunchTask which would cause crashes.
 
-## [0.2.2]
+## [0.1.1]
 
-### Changed
-- Switched to changelog file.
+### Fixed 
+- "Cargo Make/Build" output channel not being reused, bloating output panel.
+
+## [0.1.0]
+- Initial release. bau bau
