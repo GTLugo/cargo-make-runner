@@ -10,7 +10,7 @@ A quality-of-life plugin for users of [cargo-make](https://github.com/sagiegurar
 Target and profile selection, run and debug play buttons, build button, all in the status bar for convenience.
 Provides `CARGO_MAKE_RUN_TARGET` cargo-make environment variable which is set to the currently selected target.
 
-The extension will call the `build` task, so if there is no `build` task in the `Makefile.toml`, it will try to use the default `build` task (this is standard behavior for cargo-make).
+The extension will call the `build` task (`build-release` if in release profile), so if there is no task in the `Makefile.toml`, it will try to use the default task (this is standard behavior for cargo-make).
 
 > Note: This is still very much a WIP
 

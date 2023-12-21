@@ -2,6 +2,15 @@
 
 All notable changes to the "cargo-make-runner" extension will be documented in this file.
 
+## [0.2.5]
+
+### Changed
+- `build-release` task now used for when `Build` command is called with `release` profile selected.
+
+### Fixed
+- Bugs related to selecting release profile.
+- Typos with various configurations using snake_case rather than camelCase.
+
 ## [0.2.4]
 
 ### Changed

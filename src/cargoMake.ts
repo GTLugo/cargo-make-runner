@@ -71,47 +71,11 @@ export class CargoMake {
     }));
     
     context.subscriptions.push(vscode.commands.registerCommand(buildCmdID, async () => {
-      let workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-  
-      this.outputChannel.clear();
-      this.outputChannel.show();
-      
-      // run your cargo make command
-      let cargoCmd = child_process.spawn(
-        'cargo', 
-        ['make', '--profile', this.workspaceData.selectedProfile, 'build'], 
-        { cwd: workspaceFolder, shell: true }
-      );
-  
-      cargoCmd.stdout.on('data', (data) => {
-        this.outputChannel.append(data.toString());
-      });
-  
-      cargoCmd.stderr.on('data', (data) => {
-        this.outputChannel.append(data.toString());
-      });
+      this.cargoMakeBuild(rootPath);
     }));
     
     context.subscriptions.push(vscode.commands.registerCommand(debugCmdID, async () => {
-      let workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-  
-      this.outputChannel.clear();
-      this.outputChannel.show();
-      
-      // run your cargo make command
-      let cargoCmd = child_process.spawn(
-        'cargo', 
-        ['make', '--profile', this.workspaceData.selectedProfile, 'build'], 
-        { cwd: workspaceFolder, shell: true }
-      );
-  
-      cargoCmd.stdout.on('data', (data) => {
-        this.outputChannel.append(data.toString());
-      });
-  
-      cargoCmd.stderr.on('data', (data) => {
-        this.outputChannel.append(data.toString());
-      });
+      let cargoCmd = this.cargoMakeBuild(rootPath);
   
       cargoCmd.on('close', (code) => {
         // Start debugging here if code is 0 (success)
@@ -122,33 +86,16 @@ export class CargoMake {
     }));
     
     context.subscriptions.push(vscode.commands.registerCommand(runCmdID, async () => {
-      let workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-  
-      this.outputChannel.clear();
-      this.outputChannel.show();
-      
-      // run your cargo make command
-      let cargoCmd = child_process.spawn(
-        'cargo', 
-        ['make', '--profile', this.workspaceData.selectedProfile, 'build'], 
-        { cwd: workspaceFolder, shell: true }
-      );
-  
-      cargoCmd.stdout.on('data', (data) => {
-        this.outputChannel.append(data.toString());
-      });
-  
-      cargoCmd.stderr.on('data', (data) => {
-        this.outputChannel.append(data.toString());
-      });
+      let cargoCmd = this.cargoMakeBuild(rootPath);
   
       cargoCmd.on('close', async (code) => {
         // Start debugging here if code is 0 (success)
         if (code === 0) {
           const runTask = vscode.tasks.fetchTasks().then(tasks => {
-            const task = tasks.find(task => task.name === runCmdID);
+            const taskName = runCmdID + "_" + this.workspaceData.selectedProfile;
+            const task = tasks.find(task => task.name === taskName);
             if (!task) { 
-              throw new Error('Run task not found'); 
+              throw new Error('Run task `' + taskName + '` not found'); 
             }
             return task;
           });
@@ -160,27 +107,62 @@ export class CargoMake {
   }
 
   provideTasks(context: vscode.ExtensionContext, rootPath: string): void {
-    const debugConfig = this.workspaceData.getCargoDebugConfiguration(rootPath);
-
     context.subscriptions.push(vscode.tasks.registerTaskProvider('shell', {
       provideTasks: () => {
-        let taskRun = new vscode.Task(
+        let taskRunRelease = new vscode.Task(
           {type: 'shell'}, 
           vscode.TaskScope.Workspace,
-          runCmdID, 
+          runCmdID + "_release",
           'Rust', 
-          new vscode.ShellExecution(debugConfig.program + " " + this.workspaceData.settings.get("additionalArgs"))
+          new vscode.ShellExecution(this.workspaceData.getTargetPath(rootPath, "release") + " " + this.workspaceData.settings.get("additionalArgs"))
         );
 
-        taskRun.presentationOptions = {
+        taskRunRelease.presentationOptions = {
+          clear: this.workspaceData.settings.get("clearRunTaskTerminal")
+        };
+
+        let taskRunDebug = new vscode.Task(
+          {type: 'shell'}, 
+          vscode.TaskScope.Workspace,
+          runCmdID + "_development", 
+          'Rust', 
+          new vscode.ShellExecution(this.workspaceData.getTargetPath(rootPath, "debug") + " " + this.workspaceData.settings.get("additionalArgs"))
+        );
+
+        taskRunDebug.presentationOptions = {
           clear: this.workspaceData.settings.get("clearRunTaskTerminal")
         };
   
-        return [taskRun];
+        return [taskRunRelease, taskRunDebug];
       },
       resolveTask(_task: vscode.Task): vscode.Task | undefined {
         return undefined;
       }
     }));
+  }
+
+  cargoMakeBuild(rootPath: string): child_process.ChildProcessWithoutNullStreams {
+    this.outputChannel.clear();
+    this.outputChannel.show();
+
+    let target = this.workspaceData.selectedTarget ?? "";
+    
+    let cmd: string[];
+    if (this.workspaceData.selectedProfile === "release") {
+      cmd = ['make', '--profile', this.workspaceData.selectedProfile, 'build-release' + " -e CARGO_MAKE_RUN_TARGET=" + target];
+    } else {
+      cmd = ['make', '--profile', this.workspaceData.selectedProfile, 'build' + " -e CARGO_MAKE_RUN_TARGET=" + target];
+    }
+    let cargoCmd = child_process.spawn('cargo', cmd, { cwd: rootPath, shell: true });
+
+    cargoCmd.stdout.on('data', (data) => {
+      this.outputChannel.append(data.toString());
+    });
+
+    cargoCmd.stderr.on('data', (data) => {
+      this.outputChannel.append(data.toString());
+    });
+
+    return cargoCmd;
   }
 }

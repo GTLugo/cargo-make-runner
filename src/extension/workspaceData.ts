@@ -70,15 +70,25 @@ export class WorkspaceData {
     }
   }
 
-  getCargoDebugConfiguration(rootPath: string): vscode.DebugConfiguration {
+  getActiveTargetPath(rootPath: string): string {
+    let profile: string;
+    if (this.selectedProfile === "release") {
+      profile = "release";
+    } else {
+      profile = "debug";
+    }
+    
+    return this.getTargetPath(rootPath, profile);
+  }
 
+  getTargetPath(rootPath: string, profile: string): string {
     let debugType: string | undefined;
     if (process.platform === 'win32') {
-      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debugger_type_windows');
+      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debuggerTypeWindows');
     } else if (process.platform === 'darwin') {
-      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debugger_type_mac');
+      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debuggerTypeMac');
     } else {
-      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debugger_type_linux');
+      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debuggerTypeLinux');
     } 
   
     if (debugType === undefined) {
@@ -87,19 +97,22 @@ export class WorkspaceData {
   
     let binaryExtension = process.platform === 'win32' ? '.exe' : '';
   
-    let profile: string;
-    if (this.selectedProfile === "release") {
-      profile = "release";
+    let targetDir = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.targetDirectory', 'target');
+    
+    return path.join(rootPath, targetDir, profile, this.selectedTarget + binaryExtension);
+  }
+
+  getCargoDebugConfiguration(rootPath: string): vscode.DebugConfiguration {
+    let debugType: string | undefined;
+    if (process.platform === 'win32') {
+      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debuggerTypeWindows', 'lldb');
+    } else if (process.platform === 'darwin') {
+      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debuggerTypeMac', 'lldb');
     } else {
-      profile = "debug";
-    }
-  
-    let targetDir = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.target_directory');
-    if (targetDir === undefined) {
-      targetDir = 'target';
+      debugType = vscode.workspace.getConfiguration().get<string>('cargo_make_runner.debuggerTypeLinux', 'lldb');
     }
     
-    const targetBin = path.join(rootPath, targetDir, profile, this.selectedTarget + binaryExtension);
+    const targetBin = this.getActiveTargetPath(rootPath);
   
     let config = {
       type: debugType,
