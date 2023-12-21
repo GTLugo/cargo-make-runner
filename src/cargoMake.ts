@@ -172,6 +172,10 @@ export class CargoMake {
           'Rust', 
           new vscode.ShellExecution(debugConfig.program + " " + this.workspaceData.settings.get("additionalArgs"))
         );
+
+        taskRun.presentationOptions = {
+          clear: this.workspaceData.settings.get("clearRunTaskTerminal")
+        };
   
         return [taskRun];
       },
