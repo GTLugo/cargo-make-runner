@@ -2,6 +2,11 @@
 
 All notable changes to the "cargo-make-runner" extension will be documented in this file.
 
+## [0.3.0]
+
+### Added
+- Support for selecting examples to use in builds.
+
 ## [0.2.5]
 
 ### Changed
