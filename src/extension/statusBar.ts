@@ -62,20 +62,20 @@ export class StatusBarButtons {
   // }
   
   updateTargetLabel(selectedTarget: string | undefined): void {
-    this.targetButton.tooltip = "Cargo Make Target: " + (selectedTarget ?? "");
+    this.targetButton.tooltip = `Cargo Make Target: ${(selectedTarget ?? "`None`")}`;
     if (this.settings.get("useCompactIcons")) {
       this.targetButton.text = "$(tools)";
     } else {
-      this.targetButton.text = "Target: " + (selectedTarget ?? "");
+      this.targetButton.text = `Target: ${(selectedTarget ?? "")}`;
     }
   }
 
   updateProfileLabel(selectedProfile: string | undefined): void {
-    this.profileButton.tooltip = "Cargo Make Profile: " + (selectedProfile ?? "");
+    this.profileButton.tooltip = `Cargo Make Profile: ${(selectedProfile ?? "`None`")}`;
     if (this.settings.get("useCompactIcons")) {
       this.profileButton.text = "$(info)";
     } else {
-      this.profileButton.text = "Profile: " + (selectedProfile ?? "");
+      this.profileButton.text = `Profile: ${(selectedProfile ?? "")}`;
     }
   }
 }
