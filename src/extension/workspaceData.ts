@@ -140,7 +140,7 @@ export class WorkspaceData {
               if (item.endsWith('.rs')) {
                 let fileContent = fs.readFileSync(exampleItemPath, 'utf-8');
                 if (fileContent.includes('fn main')) {
-                  targets.push(`${item} (example)`);
+                  targets.push(`${item.substring(0, item.length - 3)} (example)`);
                 }
               }
             }

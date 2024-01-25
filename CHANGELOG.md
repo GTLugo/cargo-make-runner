@@ -2,6 +2,11 @@
 
 All notable changes to the "cargo-make-runner" extension will be documented in this file.
 
+## [0.3.1]
+
+### Fixed
+- Trailing `.rs` on simple examples.
+
 ## [0.3.0]
 
 ### Added
